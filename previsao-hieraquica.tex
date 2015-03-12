@@ -1,0 +1,1498 @@
+% Em 15.02.2014
+% Monografia para o Curso de Especialização em Estatística pela Universidade Federal de Minas Gerais
+% Samira Marx
+
+\documentclass[
+	% -- opções da classe memoir --
+	12pt,				% tamanho da fonte
+	openright,			% capítulos começam em pág ímpar (insere página vazia caso preciso)
+	twoside,			% para impressão em verso e anverso. Oposto a oneside
+	a4paper,			% tamanho do papel. 
+	% -- opções da classe abntex2 --
+	%chapter=TITLE,		% títulos de capítulos convertidos em letras maiúsculas
+	%section=TITLE,		% títulos de seções convertidos em letras maiúsculas
+	%subsection=TITLE,	% títulos de subseções convertidos em letras maiúsculas
+	%subsubsection=TITLE,% títulos de subsubseções convertidos em letras maiúsculas
+	% -- opções do pacote babel --
+	english,			% idioma adicional para hifenização
+	french,				% idioma adicional para hifenização
+	spanish,			% idioma adicional para hifenização
+	brazil				% o último idioma é o principal do documento
+	]{abntex2}
+
+% ---
+% Pacotes básicos 
+% ---
+\usepackage{lmodern}			% Usa a fonte Latin Modern			
+\usepackage[T1]{fontenc}		% Selecao de codigos de fonte.
+\usepackage[utf8]{inputenc}		% Codificacao do documento (conversão automática dos acentos)
+\usepackage{lastpage}			% Usado pela Ficha catalográfica
+\usepackage{indentfirst}		% Indenta o primeiro parágrafo de cada seção.
+\usepackage{color}				% Controle das cores
+\usepackage{graphicx}			% Inclusão de gráficos
+\usepackage{microtype} 			% para melhorias de justificação
+\usepackage{mathtools}                         % para confecção de matriz
+
+\usepackage{subcaption}			
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{lscape}
+\usepackage{longtable}
+\usepackage{multicol}
+\usepackage{xcolor,colortbl}
+
+% ---
+		
+% ---
+% Pacotes de citações
+% ---
+\usepackage[brazilian,hyperpageref]{backref}	 % Paginas com as citações na bibl
+\usepackage[alf]{abntex2cite}	% Citações padrão ABNT
+
+%Localização das Figuras
+\graphicspath{ {./figuras/} }
+
+% --- 
+% CONFIGURAÇÕES DE PACOTES
+% --- 
+
+% ---
+% Configurações do pacote backref
+% Usado sem a opção hyperpageref de backref
+\renewcommand{\backrefpagesname}{Citado na(s) página(s):~}
+% Texto padrão antes do número das páginas
+\renewcommand{\backref}{}
+% Define os textos da citação
+\renewcommand*{\backrefalt}[4]{
+	\ifcase #1 %
+		Nenhuma citação no texto.%
+	\or
+		Citado na página #2.%
+	\else
+		Citado #1 vezes nas páginas #2.%
+	\fi}%
+% ---
+
+% ---
+% Informações de dados para CAPA e FOLHA DE ROSTO
+% ---
+\titulo{Previsão Hierárquica Aplicada às Políticas Públicas de Transportes}
+\autor{Samira Marx}
+\local{Brasil}
+\data{Abril de 2015}
+\orientador{Prof.ª Drª. Ella Mercedes Medrano de Toscano}
+\instituicao{%
+  Universidade Federal de Minas Gerais - UFMG
+  \par
+  Instituto de Ciências Exatas
+  \par
+  Especialização em Estatística}
+\tipotrabalho{Monografia de Conclusão de Curso de Especialização em Estatística}
+% O preambulo deve conter o tipo do trabalho, o objetivo, 
+% o nome da instituição e a área de concentração 
+\preambulo{Monografia apresentada ao Departamento de Estatística do Instituto de Ciências Exatas da Universidade Federal de Minas Gerais para conclusão do curso de Especialização em Estatística.}
+% ---
+
+
+% ---
+% Configurações de aparência do PDF final
+
+% alterando o aspecto da cor azul
+\definecolor{blue}{RGB}{41,5,195}
+
+% informações do PDF
+\makeatletter
+\hypersetup{
+     	%pagebackref=true,
+		pdftitle={\@title}, 
+		pdfauthor={\@author},
+    	pdfsubject={\imprimirpreambulo},
+	    pdfcreator={LaTeX with abnTeX2},
+		pdfkeywords={abnt}{latex}{abntex}{abntex2}{trabalho acadêmico}, 
+		colorlinks=true,       		% false: boxed links; true: colored links
+    	linkcolor=blue,          	% color of internal links
+    	citecolor=blue,        		% color of links to bibliography
+    	filecolor=magenta,      		% color of file links
+		urlcolor=blue,
+		bookmarksdepth=4
+}
+\makeatother
+% --- 
+
+% --- 
+% Espaçamentos entre linhas e parágrafos 
+% --- 
+
+% O tamanho do parágrafo é dado por:
+\setlength{\parindent}{1.3cm}
+
+% Controle do espaçamento entre um parágrafo e outro:
+\setlength{\parskip}{0.2cm}  % tente também \onelineskip
+
+% ---
+% compila o indice
+% ---
+\makeindex
+% ---
+
+% ----
+% Início do documento
+% ----
+\begin{document}
+
+% Retira espaço extra obsoleto entre as frases.
+\frenchspacing 
+
+% ----------------------------------------------------------
+% ELEMENTOS PRÉ-TEXTUAIS
+% ----------------------------------------------------------
+% \pretextual
+% ---
+% Capa
+% ---
+\imprimircapa
+% ---
+% ---
+% Folha de rosto
+% (o * indica que haverá a ficha bibliográfica)
+% ---
+\imprimirfolhaderosto*
+% ---
+
+% ---
+% Inserir a ficha bibliografica
+% ---
+
+% Isto é um exemplo de Ficha Catalográfica, ou ``Dados internacionais de
+% catalogação-na-publicação''. Você pode utilizar este modelo como referência. 
+% Porém, provavelmente a biblioteca da sua universidade lhe fornecerá um PDF
+% com a ficha catalográfica definitiva após a defesa do trabalho. Quando estiver
+% com o documento, salve-o como PDF no diretório do seu projeto e substitua todo
+% o conteúdo de implementação deste arquivo pelo comando abaixo:
+%
+% \begin{fichacatalografica}
+%     \includepdf{fig_ficha_catalografica.pdf}
+% \end{fichacatalografica}
+\begin{fichacatalografica}
+	\vspace*{\fill}					% Posição vertical
+	\hrule							% Linha horizontal
+	\begin{center}					% Minipage Centralizado
+	\begin{minipage}[c]{12.5cm}		% Largura
+	
+	\imprimirautor
+	
+	\hspace{0.5cm} \imprimirtitulo  / \imprimirautor. --
+	\imprimirlocal, \imprimirdata-
+	
+	\hspace{0.5cm} \pageref{LastPage} p. : il. (algumas color.) ; 30 cm.\\
+	
+	\hspace{0.5cm} \imprimirorientadorRotulo~\imprimirorientador\\
+	
+	\hspace{0.5cm}
+	\parbox[t]{\textwidth}{\imprimirtipotrabalho~--~\imprimirinstituicao,
+	\imprimirdata.}\\
+	
+	\hspace{0.5cm}
+		1. Planejamento de Transportes.
+		2. Previsão Hierárquica
+		3. Bottom up.
+		4. Top-Down.
+		5. Parceria público-privada.
+		6. MG-050.
+		7. Nível de serviço.
+		I. Orientador.
+		II. Universidade Federal de Minas Gerais.
+		III. Instituto de Ciências Exatas.
+		IV. Título\\ 			
+	
+	\hspace{8.75cm} CDU 02:141:005.7\\
+	
+	\end{minipage}
+	\end{center}
+	\hrule
+\end{fichacatalografica}
+
+% ---
+% Inserir folha de aprovação
+% ---
+
+% Isto é um exemplo de Folha de aprovação, elemento obrigatório da NBR
+% 14724/2011 (seção 4.2.1.3). Você pode utilizar este modelo até a aprovação
+% do trabalho. Após isso, substitua todo o conteúdo deste arquivo por uma
+% imagem da página assinada pela banca com o comando abaixo:
+%
+%\includepdf{folhadeaprovacao_final.pdf}
+%
+\begin{folhadeaprovacao}
+
+  \begin{center}
+    {\ABNTEXchapterfont\large\imprimirautor}
+
+    \vspace*{\fill}\vspace*{\fill}
+    \begin{center}
+      \ABNTEXchapterfont\bfseries\Large\imprimirtitulo
+    \end{center}
+    \vspace*{\fill}
+    
+    \hspace{.45\textwidth}
+    \begin{minipage}{.5\textwidth}
+        \imprimirpreambulo
+    \end{minipage}%
+    \vspace*{\fill}
+   \end{center}
+        
+   Trabalho aprovado. \imprimirlocal, Abril de 2015:
+
+   \assinatura{\textbf{\imprimirorientador} \\ Orientador} 
+   \assinatura{\textbf{Professor} \\ Convidado 1}
+   \assinatura{\textbf{Professor} \\ Convidado 2}
+   %\assinatura{\textbf{Professor} \\ Convidado 3}
+   %\assinatura{\textbf{Professor} \\ Convidado 4}
+      
+   \begin{center}
+    \vspace*{0.5cm}
+    {\large\imprimirlocal}
+    \par
+    {\large\imprimirdata}
+    \vspace*{1cm}
+  \end{center}
+  
+\end{folhadeaprovacao}
+% ---
+
+% ---
+% Dedicatória
+% ---
+%\begin{dedicatoria}
+%   \vspace*{\fill}
+%   \centering
+%  \noindent
+%   \textit{ Este trabalho é dedicado às crianças adultas que,\\
+%   quando pequenas, sonharam em se tornar cientistas.} \vspace*{\fill}
+%\end{dedicatoria}
+% ---
+
+% ---
+% Agradecimentos
+% ---
+\begin{agradecimentos}
+
+À Profª Ela Mercedes, que pacientemente me orientou neste trabalho;
+
+À Rose, pelo atencioso suporte durante o curso e pelas palavras carinhosas de incentivo e apoio;
+
+Aos meus amigos da Secretaria de Transporte e Obras Públicas de Minas Gerais, especialmente ao Felipe Melo, que dividiu comigo inúmeras batalhas na gestão do contrato de PPP da MG-050, objeto deste trabalho.
+
+Ao meu namorado, Francisco, pelo incentivo constante, pela inesgotável disposição em me ensinar, por me inspirar a ser uma pessoa melhor.
+
+\end{agradecimentos}
+% ---
+
+% ---
+% Epígrafe
+% ---
+\begin{epigrafe}
+    \vspace*{\fill}
+	\begin{flushright}
+		\textit{The founding, shaping, and growth of human agglomerations throughout history have been products of complex interactions of many forces. One major force has always been transportation\\
+		(Vukan R. Vuchic, 2007)}	
+\end{flushright}
+\end{epigrafe}
+% ---
+
+% ---
+% RESUMOS
+% ---
+
+% resumo em português
+\setlength{\absparsep}{18pt} % ajusta o espaçamento dos parágrafos do resumo
+\begin{resumo}
+
+Na administração de concessões rodoviárias é de fundamental importância o acompanhamento do volume de tráfego para a gestão da concessão como um todo e, especialmente, para o planejamento de obras de ampliação. Neste trabalho é abordado o caso prático da PPP da MG-050, a primeira PPP rodoviária do país. Os dados extraídos dessa concessão subisidiaram a análise de aplicação de métodos de previsão hierárquica, já que tão importante quanto as previsões globais de tráfego da rodovia são as previsões detalhadas desses fluxos.
+São comparados 5 métodos de previsão hierárquica, sendo eles \emph{bottom-up}, três variações do método top-dow, sendo uma delas recentemente proposta na literatura por Hyndman et al., e o método de combinação ótima, proposto também pelos mesmos autores.
+
+
+ \textbf{Palavras-chaves}: Planejamento de Transportes. Previsão Hierárquica. Bottom-up. Top-down. Parceria público-privada. MG-050. Nível de serviço.
+\end{resumo}
+
+% resumo em inglês
+\begin{resumo}[Abstract]
+ \begin{otherlanguage*}{english}
+
+In the administration of highway concessions is of fundamental importance to monitor the traffic volume for the management of the concession as a whole and especially for planning expansion works . This work addresses the practical PPP case of MG-050 , the first road PPP in the country. The data extracted this concession subisidised the analysis of application of hierarchical forecasting methods, since as important as the overall highway traffic forecasts are detailed forecasts of such flows.
+Here are compared 5 methods of hierarchical forecast, wich are  bottom-up, three variations of the top-down method, one of them recently proposed in the literature by Hyndman et al . ,and the optimum combination method, also proposed by the same authors.
+
+
+   \vspace{\onelineskip}
+ 
+   \noindent 
+   \textbf{Key-words}: Transportation planning. Hierachical forecast. Bottom up. Top-down. Public-private partnership. MG-050. Level of service.
+ \end{otherlanguage*}
+\end{resumo}
+
+
+% ---
+% inserir lista de ilustrações
+% ---
+\pdfbookmark[0]{\listfigurename}{lof}
+\listoffigures*
+\cleardoublepage
+% ---
+
+% ---
+% inserir lista de tabelas
+% ---
+\pdfbookmark[0]{\listtablename}{lot}
+\listoftables*
+\cleardoublepage
+% ---
+
+% ---
+% inserir lista de abreviaturas e siglas
+% ---
+\begin{siglas}
+ \item[PPP] Parceria público-privada
+ \item[SETOP] Secretaria de Estado de Transportes e Obras Públicas
+ \item[DER/MG] Departamento de Estradas de Rodagem de Minas Gerais 
+ \item[CODEMIG] Companhia de Desenvolvimento Econômico de Minas Gerais
+ \item[HCM] \emph{Highway Capacity Manual}
+
+\end{siglas}
+% ---
+
+% ---
+% inserir lista de símbolos
+% ---
+%\begin{simbolos}
+%  \item[$ \Gamma $] Letra grega Gama
+%  \item[$ \Lambda $] Lambda
+%  \item[$ \zeta $] Letra grega minúscula zeta
+%  \item[$ \in $] Pertence
+%\end{simbolos}
+% ---
+
+% ---
+% inserir o sumario
+% ---
+\pdfbookmark[0]{\contentsname}{toc}
+\tableofcontents*
+\cleardoublepage
+% ---
+
+
+
+% ----------------------------------------------------------
+% ELEMENTOS TEXTUAIS
+% ----------------------------------------------------------
+\textual
+
+% ----------------------------------------------------------
+% Introdução (exemplo de capítulo sem numeração, mas presente no Sumário)
+% ----------------------------------------------------------
+\chapter*[Introdução]{Introdução}
+\addcontentsline{toc}{chapter}{Introdução}
+% ----------------------------------------------------------
+
+A etapa de previsão e projeção de demanda sempre figuraram como uma etapa importante em qualquer atividade de planejamento.
+Trazendo ao planejamento de transportes, que é o tema de interesse desse trabalho, percebemos que já no clássico modelo quatro etapas, conforme apresentador por \citeonline{hensher_handbook_2007} a geração de viagens é o primeiro elemento considerado sendo o ponto de partida das análises seguintes.
+
+\begin{citacao}
+\emph{The objective of this first stage (TRIP GENERATION) of the 4SM process is to define the magnitude of total daily travel in the model system, at the household and zonal level, for various trip purposes (activities). (…) Generation essentially defines total travel in the region and the remaining steps are effectively share models.} \cite{hensher_handbook_2007}
+\end{citacao}
+ 
+Em suma, a ideia deste modelo pode ser resumida na ideia de que a atividade de identificação da demanda para os serviços ou infraestrutura de transportes, como não poderia deixar de ser, é o ponto de partida e deve ser feito à priori. Isso tanto deve ser feito para o diagnóstico da situação atual, como para projeção de períodos futuros. Neste momento entram em cena, portanto, a aplicação das técnicas de previsão e projeção.
+
+O estudo de caso deste trabalho pretende discutir procedimentos para melhorar a acurácia de previsões de tráfego na rodovia MG-050 considerando-se a natureza hierárquica dos dados. A ideia central consiste no fato de que, além da importância da previsão de tráfego em toda a rodovia, que é insumo para diversas tomadas de decisão no âmbito da administração da rodovia, também é de grande relevância e traz grande quantidade de informações a previsão categorizada de quais serão os veículos que nela transitarão, por onde passarão e para onde estarão indo.
+
+O tema de previsão de séries temporais hierárquicas já foi objeto de estudos e discussões na literatura estatística, especialmente na segunda metade do século XX. Recentemente, nos anos 2000,  Athanasopoulos, Aimed e Hyndman retomaram as discussões existentes trazendo novas proposições para o tema. 
+
+A fim de trazer estas discussões ao caso prático, pretende-se a comparação empírica das técnicas e métodos existentes na literartura. Os dados para este estudo foram extraídos da Parceria Público Privada da MG-050, que é uma concessão rodoviária existente há cerca de 8 anos e que terá duração de 25 anos.
+
+Projetos de concessões de infraestrutura e serviços públicos à iniciativa privada tem ganhado espaço entre as políticas públicas mundo afora pelas vantagens que apresentam junto à Administração Pública e à sociedade. Dois dos conceitos inerentes às PPPs são a contratação de resultados e a remuneração atrelada ao desempenho do parceiro privado. Na PPP da MG-050 estes dois conceitos consubstanciaram-se em um importante sistema de indicadores, dentre os quais figura o indicador "Nível de Serviço". Como se verá adiante, este indicador objetiva medir a densidade de tráfego na rodovia, sinalizando quando serão necessárias  obras de ampliação da rodovia. 
+
+A aferição desse indicador demanda um alto nível de detalhamento de dados, especialmente dados classificados de tráfego. No âmbito da PPP da MG-050 a aferição deste indicador é um exemplo da relevância da previsão hierárquica, e será utilizada neste trabalho.
+
+Além desta introdução, são apresentados mais quatro capítulos e a conclusão. No capítulo 1 é feita uma contextualização a respeito da PPP da MG-050, que é fonte dos dados e objeto de estudo deste trabalho. No capítulo 2 são discutidas algumas abordagens para aplicação dos métodos de previsão hierárquica, onde também são discutidas as principais referências na literatura. No capítulo 3 é exposta a metodologia de execução adotada para este trabalho. No capítulo 4 são apresentados os resultados do estudo e, por fim, na conclusão são discutidas as considerações finais.
+
+
+
+% Primeiro Capítulo
+% ---
+\chapter{Sobre a Parceria Público-Privada da MG-050}
+% ---
+
+O projeto de parceria público-privada da rodovia MG-050 teve seu contrato de concessão patrocinada assinado em 21 de maio de 2007 entre a Secretaria de Estado de Transporte e Obras Públicas - SETOP e a Concessionária da Rodovia MG-050, tendo como intervenientes o Departamento de Estradas de Rodagem - DER/MG, e a Companhia de Desenvolvimento Econômico de Minas Gerais - CODEMIG, conforme licitação por concorrência realizada em 07 de agosto de 2006, homologada em 09 de maio de 2007.
+
+A elaboração do projeto de concessão patrocinada para  a rodovia MG-050 foi o primeiro projeto de PPP do país na área de infraestrutura rodoviária, sendo fruto de um esforço conjunto entre o DER/MG, a SETOP, a Unidade PPP, a Advocacia-Geral do Estado, a Companhia de Desenvolvimento Econômico de Minas Gerais, CODEMIG.
+
+O objeto da PPP da MG-050 compreende a exploração, por 25 (cinte e cinco) anos, de aproximadamente 372 km rodoviários que interligam a região metropolitana de Belo Horizonte à divisa com o Estado de São Paulo, compreendendo os seguintes trechos: entroncamento BR-262 (Juatuba)/São Sebastião do Paraíso da MG-050, entroncamento MG-050/ entroncamento BR-265 da BR 491(km 0,0 ao km 4,65), e no trecho São Sebastião do Paraíso – Divisa MG/SP da Rodovia BR 265. As principais obrigações da Concessionária da Rodovia MG-050 são a recuperação, ampliação e manutenção da rodovia e o atendimento ao quadro de indicadores de desempenho existente no contrato.
+
+Na Figura \ref{fig:mapa-mg050} é mostrada a localização do trecho objeto de PPP. Os principais municípios influenciados por esse corredor viário são: Juatuba, Divinópolis, Formiga, Passos, Itaúna, Piumhí e São Sebastião do Paraíso.
+ 
+
+\begin{figure}[h]
+\caption{\label{fig:mapa-mg050}Localização do trecho sob concessão - Rodovias MG-050, BR-491 e BR-265}
+\centering
+\includegraphics[scale=1]{mapa-mg050}
+\legend{Fonte: Anuário da PPP MG-050}
+\end{figure}
+
+% ---
+\section{Mecanismo de remuneração atrelado ao desempenho}
+% ---
+
+A diferença fundamental entre o modelo de concessão previsto na Lei 8.987/95, as chamadas “concessões comuns”, e na Lei de PPPs 11.079/04, as chamdas “concessões especiais”, que podem ser patrocinada ou administrativa, é a forma de remuneração do agente privado que recebe os direitos de exploração de um serviço público. Nas concessões comuns usualmente um serviço ou infraestrutura públicos é concedido à exploração de um agente privado que assume integralmente os riscos da prestação do serviço e obtêm sua remuneração diretamente do pagamento das tarifas pelos usuários. A Lei de PPPs trouxe, porém, a possibilidade de um arranjo mais elaborado para as relações entre público e privado.
+
+Apesar dos avanços nas relações contrauais do poder público trazidos pela Lei 8.987/95, ainda existiam limitações às possíveis relações entre público e privado.. Nesse sentido, a Lei de PPP representou, no plano do marco legal geral, um apronfundamento da experiência brasileira de contratação de entes privados para a prestação de serviços públicosna ,edida que permitiu que as relações entre público e privado ganhassem mais fexibilidade e um maior leque de configurações possíveis \cite{ribeiroprado2010}.
+
+Com as PPPs foi introduzido o conceito de prestação de serviços públicos por um agente privado mediante remuneração exclusiva pelo parceiro público (concessão administrativa) ou em complementação à arrecadação das tarifas pagas pelos usuários (concessão patrocinada). Ademais, foi introduzido o conceito de repartição objetiva de riscos de modo a envolver o poder público com papéis e responsabilidades na execução do empreendimento.
+
+Com essas novas possibilidades de arranjos entre poder público e agente privado, projetos que não apresentavam viabilidade financeira por meio da arreacadação tarifária realizada junto aos usuários ou que apresentavam riscos elevados para os agentes privados ganharam a oportunidade de serem transferidos à iniciativa privada.
+
+A repartição objetiva de riscos relaciona-se fortemente com a ideia de contratação por resultados, e a entrega de resultados, por sua vez, relaciona-se com a remuneração. Nos contratos de parcerias público-privadas cuida-se de vincular a performance do parceiro privado, às obrigações de remuneração da Administração, de modo a fortalecer o elo entre as obrigações contrapostas das partes. Pretende-se com esse arranjo aumentar os incentivos econômicos para que o parceiro privado disponibilize o serviço conforme pactuado no contrato, sobretudo quanto aos níveis desejáveis de qualidade. 
+
+No contrato de PPP da MG-050, foram estabelecidos um rol de indicadores de desempenho, entre indicadores operacionais, financeiros, ambientais e sociais. Mensalmente a nota desses indicadores é computada para definir a remuneração mensal que deve ser paga à concessionária.
+
+A nota dos indicadores variam de 0 a 10, fazendo variar proporcionalmente o pagamento mensal que é devido à concessionária. A figura \ref{fig:qid1} apresenta o mecanismo de pagamento da contraprestação pecuniária – CP, que é devida mensalmente à concessionária.
+
+\begin{figure}[h]
+\caption{\label{fig:qid1} Mecanismo de pagamento vinculado ao desempenho - PPP MG-050}
+\centering
+\includegraphics[scale=1]{qid-mg050}
+\legend{Fonte: Contrato SETOP 007/2007, Anexo V.}
+\end{figure}
+
+Como se pode ver pela figura \ref{fig:qid1}, os indicadores de desempenho estão divididos em quatro áreas, e para cada área atribui-se um peso para cálculo da nota final: operacional (70\%), ambiental (10\%), social (10\%) e financeiro (10\%).
+Os indicadores operacionais são organizados em três grupos: “segurança”, “condição de superfície” e “manutenção patrimonial”, conforme a Figura \ref{fig:qid2}.
+
+\begin{figure}[h]
+\caption{\label{fig:qid2} Indicadores de desempenho da área operacional - PPP MG-050}
+\centering
+\includegraphics[scale=1]{qid2-mg050}
+\legend{Fonte: Contrato SETOP 007/2007, Anexo V.}
+\end{figure}
+
+A aferição dos indicadores é realizada para cada um dos 20 segmentos homogêneos da rodovia , que para fins ilustrativos são apresentados no \ref{chap:segmentos-homogeneos-mg050}. 
+
+Neste trabalho, um enfoque especial será dado ao indicador nível de serviço, que pela sua relevância no planejamento de novas obras e na gestão da rodovia, justificou a realização deste trabalho.
+
+
+\section{O Indicador nível de Serviço}
+
+Como já mencionado na introdução, a parceria público-privada da MG-050 é regida por vários indicadores de desempenho, cujas funções são avaliar a qualidade do serviço prestado e, em decorrência, definir o valor a ser pago pelo poder público à concessionária dos serviços – a contraprestação pecuniária.
+Especial atenção é dada, porém, ao indicador nível de serviço, que, pela sua concepção, figura como um indicador que funciona como uma espécie de “gatilho” para a execução de obras de ampliação da rodovia.
+
+No conceito de nível de serviço, procura-se avaliar o serviço que a estrada proporciona aos seus utilizadores por meio de análise das características da rodovia e do volume de tráfego. O nível de serviço é dado pela quantidade de veículos que passa numa seção da estrada em uma unidade de tempo \cite{santosmourao2013}. Atualmente a metodologia mundialmenre reconhecida para cálculo do nível de serviço é aquela paresentada pelo \emph{Highway Capacity Manual} – HCM.
+
+O \emph{Highway Capacity Manual} – HCM, foi desenvolvido pelo \emph{Transportation Research Board of the National Academies of Science} dos Estados Unidos. Nele estão contidos conceitos, diretrizes e procedimentos computacionais para o cálculo da capacidade e qualidade do serviço em rodovias. Nesta metodologia são levados em conta diversos fatores, dentre eles as características da rodovia (largura de pista, quantidade de faixas, intercessões e cruzamentos, presença de travessias de pedestres, sinalização), características dos fluxos (volume de tráfego, percentual de veículos leves e pesados), dentre outras especificações.
+
+Como resultado da aplicação da metodologia de cálculo do HCM se chega em uma classificação do nível de serviço para o segmento de rodovia em análise numa escala de A à F, que é uma escala de classificação do escoamento de veículos ou fluidez de tráfego.
+
+\begin{citacao}
+(...) seis níveis de serviço (são) designados pelas letras de A a F. O nível de serviço A corresponde ao regime de escoamento livre com condições de circulação muito boas. À medida que as condições de circulação se degradam, faz-se corresponder aos níveis B e C, ainda, um escoamento estável, sendo o nível D atribuído quando o escoamento se aproxima da instabilidade. O nível de serviço E representa condições de escoamento já muito próximas do regime instável, resultantes dos volumes de tráfego serem elevados com valores perto da capacidade, (...) . Ao escoamento em regime de sobressaturação, correspondente a situações de congestionamento, é reservado o nível de serviço F. \apud{costamacedo2008}{santosmourao2013}
+\end{citacao}
+
+Desse modo, a aferição do nível de serviço nos diversos segmentos da rodovia indica a qualidade da fluidez do tráfego e permite ao tomador de decisões compreender a urgência bem como a necessidade da realização de obras de ampliação, sejam elas terceiras faixas, duplicações, correções de curvas horizontais e verticais, ou, até mesmo, reformulações de acessos e interseções. 
+
+Conforme as regras do contrato de PPP da MG-050, é admitido para os segmentos da rodovia que operem em até 50 horas/ano no nível E. Ou seja, admite-se que durante 50 (cinquenta horas) do ano a rodovia opere próxima ao limite de sua capacidade. Caso ocorram mais que 50 horas nesse nível de operação devem ser iniciadas obras de ampliação na rodovia de modo a que o nível de serviço seja reestabelecido. 
+
+Estas 50 (cinquenta) horas, para as quais se admite baixa qualidade na fluidez de tráfego, são picos excepcionais de volume de tráfego \footnote{A quantidade de horas que podem ser consideradas “excepcionais” no volume de tráfego de uma rodovia é realizada por meio da análise da "curva da enésima hora". Esta curva consiste na ordenação decrescente de todos os volumes horários anuais, expressos em percentagem do Volume Médio Diário (VMD), designado como fator K. \cite{manualdnit2006}}, tais como feriados (carnaval, semana santa, fim de ano) ou possíveis eventualidades às quais se sujeita a rodovia (problemas operacionais na cobrança de pedágio, acidentes com retenção de pista etc). Admite-se que nessas situações excepcionais a rodovia opere em condições críticas de escoamento porque seria antieconômico projetar a infraestrutura para situações excepcionais.
+
+\begin{citacao}
+Projetar uma rodovia em condições ideais consiste em planejá-la com características para atender à máxima demanda horária prevista para o ano de projeto. Em tal situação, em nenhuma hora do ano ocorreria congestionamento. Em contrapartida, o empreendimento seria antieconômico, pois a rodovia ficaria superdimensionada durante as demais horas do ano (DNER, 1999). Assim, o dimensionamento de uma rodovia deve permitir um certo número de horas congestionadas e a decisão de qual número é aceitável e fundamental para a adoção do volume horário de projeto (VHP). \apud{costamacedo2008}{santosmourao2013}
+\end{citacao}
+
+Conclui-se, portanto, que o dimensionamento de uma rodovia é uma função tanto do volume de tráfego esperado como dos níveis de desempenho (níveis de serviço) que são admitidos  para a mesma. 
+
+No caso da PPP da MG-050, o nível de desempenho está definido contratualmente – até 50h/ano operando em nível E. Sendo assim, torna-se relevante uma acurada previsão de tráfego para que as intervenções de ampliação na rodovia ocorram no tempo certo, nem antes do necessário, tampouco após \footnote{Em projetos estruturados sob a forma de \emph{project finance}, a variação dos desembolsos ao longo do tempo trazem impactos no retorno financeiro dos projetos. Portanto, adiantar uma obra não é economicamente desejável. Por outro lado, atrasá-la, traz prejuízos à população pois deteriora a qualidade do serviço.}. Neste contexto, os modelos de previsão hierárquica ganham relevância haja vista que, para o cálculo do nível de serviço, é necessário uma vasta gama de informações de tráfego, que podem ser entendidas como fragmentações das informações de tráfego global da rodovia, que , por sua vez, podem ser entendidas como séries temporais.
+Espera-se que a aplicação de métodos de previsão hierárquica de séries temporais contribua para melhorar as previsões dos volumes de tráfego e, dessa forma, seja possível calcular de forma mais acurada o nível de serviço da rodovia.
+
+
+% Segundo Capítulo
+\chapter{Abordagens para Modelos de Previsão Hierárquica}
+% ---
+
+Neste trabalho pretende-se utilizar os estudos e avanços obtidos por \citeonline{hyndman2009} acerca dos estudos de previsão hierárquica de dados em séries temporais.
+Estes autores consideram cinco abordagens, ou métodos, diferentes para procederem previsões hierárquica de dados, evidenciando em cada um seus prós e contras.
+
+Segundo \citeonline{hyndman2009}, as abordagens mais comuns para previsão hierárquica de dados são a top-down e a bottom-up. A maioria da literatura sobre o tema tem focado na comparação da performance destes dois métodos.
+
+Em 2009, estes autores foram além e propuseram, além de uma nova abordagem para o modelo top-down, também um modelo denominado pelos próprios autores como “combinação ótima”. Este modelo mostrou-se particularmente interessante por apresentar propriedades desejáveis que as abordagens tradicionais não apresentam. \cite{hyndman2009}. 
+
+\section{Sobre séries temporais hierárquicas}
+
+Segundo \citeonline{morettin-toloi2006}, uma série temporal é qualquer conjunto de observações ordenadas no tempo. Diversos outros autores trabalham conceitos que variam marginalmente disso, para este trabalho, porém, é suficiente entender a natureza sequencial dos dados, ordenados temporalmente.
+
+Em várias ocasiões observa-se a existência de séries temporais que podem ser agregadas ou desagregadas em diferentes níveis ou grupos de acordo com suas características. Estas são chamadas de séries temporais hierárquicas \cite{hyndman2009} - Figura \ref{fig:diagrama} .
+
+\begin{figure}[h]
+\caption{\label{fig:diagrama} Diagrama hierárquico de dois níveis}
+\centering
+\includegraphics[scale=0.3]{diagrama}
+\legend{Fonte: \cite{hyndman2009}}
+\end{figure}
+
+Para melhor compreensão do conceito de dados hierárquicos, tome-se como exemplo o estudo de \citeonline{hyndman2009} acerca da demanda de turismo na Austrália, enquanto série temporal hierárquica. Neste estudo, foi considerada a série agregada sobre os dados de turismo na Austrália, mensurados na forma “número de noites de visitantes”, ou seja, a quantidade de noites em que pessoas passaram na Austrália estando fora de casa. 
+
+Estes dados, por sua vez, foram também considerados como séries temporais sob o ponte de vista de cada categoria, como num movimento de desagregação, e assim sucessivamente, quantos forem os níveis de categorização existentes. Neste sentido, entende-se que a série temporal “número de noites de visitantes” pode ser entendida como a agregação de várias séries temporais mais específicas, como por exemplo “número de noites de visitantes a trabalho” ( e assim para as demais categorias de motivo da viagem) e “número de noites de visitantes a trabalho em no estado de Queensland” (e assim para as demais categorias de região de trabalho, combinadas com as categorias de motivo da viagem). Na Tabela \ref{tab:exemplohierarquia} são mostradas as categorias adotadas no referido estudo de \citeonline{hyndman2009}.
+
+\begin{table}[h]
+\ABNTEXfontereduzida\caption{Exemplo de séries temporais hierárquicas - Categorias hierarquizadas do estudo de demanda de turismo na Austrália}
+\label{tab:exemplohierarquia}
+\centering
+\begin{tabular}{l c c c}
+
+\toprule
+
+Nível & Número de séries & Total de séries por nível \\
+\midrule
+Australia & 1 & 1\\
+Motivo da viagem & 4 & 4\\
+Estados e territórios & 7 & 28\\
+Capital versus outras & 2 & 56\\
+
+\bottomrule
+\end{tabular}
+\legend{Fonte: \cite{hyndman2009}}
+\end{table}
+
+Os dados agregados da série temporal são representados por $Y_t$, no qual t corresponde ao período de observação, t=1,2,...,n. Para se referir de forma genérica às séries dentro da hierarquia estabelecida, os nós, será usada a notação X, assim, as observações das séries correspondentes a cada nó, serão dadas por $Y_{(X,t)}$, sendo X = A, B, C, AA, AB, AC, BA, BB, BC, CA, CB, CC. 
+
+Ainda esclarecendo as notações a serem utilizadas, K será utilizado para se referir aos níveis hierárquicos existentes. Conforme exemplo que esta sendo utilizado, K = 2. Para K=1, entende-se, portanto, o primeiro nível de desagregação da série original, que engloba os nós X= A, B, C; K=2, por sua vez, ao segundo nível hierárquico de desagregação da série original, que engloba os nós X= AA, AB, AC, BA, BB, BC, CA, CB, CC.
+Conforme explicam os autores, a notação generalizada de todas as séries temporais que compõe uma série hierarquizada é dada por:
+
+\begin{equation}
+Y_t=(Y_t, Y'_{(1,t)},Y'_{(2,t)},…,Y'_{(k,t)})
+\end{equation}
+
+Neste caso, $Y_t$ é um vetor coluna que "empilha" as observações de todas as séries temporais.
+
+\[Y_t = \begin{bmatrix}
+Y_{A,t}\\[0.3em]
+Y_{B,t}\\[0.3em]
+Y_{C,t}\\[0.3em]
+Y_{AA,t}\\[0.3em]
+Y_{AB,t}\\[0.3em]
+\vdots\\[0.3em]
+Y_{CB,t}\\[0.3em]
+Y_{CC,t}\\[0.3em]
+\end{bmatrix}
+\]
+
+Outra forma bastante útil para denotar os dados é a organização matricial. Neste caso, podemos entender os dados hierarquizados por:
+
+\begin{equation}
+\label{eq:summingmatrix}
+Y_t=SY_{(K,t)}
+\end{equation}
+
+$S$ é uma matriz resumo de ordem $m \times m_K$, na qual $m_i$ é o número de nós  de cada nível $i$. Assim, $m= m_0 + m_1 + ... + m_k)$, ou seja, em nosso exemplo, $m=13$; $m_1=3$ e $m_2=9$. Ainda mantendo como exemplo a série temporal hierárquica ilustrada na Figura \ref{fig:diagrama}, a respresentação matricial é apresentada abaixo:
+
+\[\begin{bmatrix}
+Y_{A,t}\\[0.3em]
+Y_{B,t}\\[0.3em]
+Y_{C,t}\\[0.3em]
+Y_{AA,t}\\[0.3em]
+Y_{AB,t}\\[0.3em]
+\vdots\\[0.3em]
+Y_{CB,t}\\[0.3em]
+Y_{CC,t}\\[0.3em]
+\end{bmatrix}
+ = \begin{bmatrix}
+1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\[0.3em]
+1 & 1 & 1 & 0 & 0 & 0 & 0 & 0 & 0 \\[0.3em]
+0 & 0 & 0 & 1 & 1 & 1 & 0 & 0 & 0 \\[0.3em]
+0 & 0 & 0 & 0 & 0 & 0 & 1 & 1 & 1 \\[0.3em]
+    &   &   &   &   &   &   &   &   \\[0.3em]
+    &   &   &   &   &   &   &   &   \\[0.3em]
+    &   &   &   & I_9  &   &   &   &   \\[0.3em]
+    &   &   &   &   &   &   &   &   \\[0.3em]
+    &   &   &   &   &   &   &   &   \\[0.3em]
+\end{bmatrix}  \begin{bmatrix}
+Y_{AA,t}\\[0.3em]
+Y_{AB,t}\\[0.3em]
+Y_{AC,t}\\[0.3em]
+Y_{BA,t}\\[0.3em]
+Y_{BB,t}\\[0.3em]
+Y_{BC,t}\\[0.3em]
+Y_{CA,t}\\[0.3em]
+Y_{CB,t}\\[0.3em]
+Y_{CC,t}\\[0.3em]
+\end{bmatrix}\]
+
+Nos próximos tópicos serão apresentados as principais abordagens para métodos de previsões hierárquica que a literatura considera, antes porém, será útil generalizar a forma de representação gráfica das previsões, pois trata-se de um ponto comum à todos os métodos tratados adiante.
+
+
+Uma previsão $h$ passos à frente para cada série $Y_X$ será denotada por $\hat{Y}_{X,n}(h)$. Por exemplo, $\hat{Y}_{AB,n}(h)$ é uma previsão de $h$ passos à frente para a série $Y_{AB}$, a partir dos dados $Y_{AB, 1}, \dots,Y_{AB, n}$. Por sua vez, a previsão de toda a hierarquia de dados será dada por $\hat{Y}_{n(h)}$, que contém todas as previsões das séries que compõem a hierarquia.
+A notação a seguir resume a representação que será utilizada para todos os métodos de previsão hierárquica que serão tratados:
+
+\begin{equation}
+\tilde{Y}_n(h) = SP\hat{Y}_n(h)
+\end{equation}
+
+Nesta equação, $S$ é a matriz resumo, como mostrado na equação \ref{eq:summingmatrix} e $P$ é uma matriz de ordem $m_K \times m$.
+A matriz $P$ é o elemento que diferencia as diferentes abordagens de previsão hierárquica, conforme a formulação de \citeonline{hyndman2009}.
+
+
+\section{Abordagens \emph{bottom-up} e \emph{top-down}}
+%Referências: 
+%Dangerfield and Morris (1992), 
+%Dunn, Williams and DeChaine (1976), 
+%Orcutt et al (1968), 
+%Shiffer and Wolf (1979), 
+%Theil (1954), 
+%Zellner and Tobias (2000)
+
+
+As tradicionais abordagens para previsão hierárquicas são tratadas na literatura constantemente em oposição. Os métodos clássicos \emph{bottom-up} e \emph{top-down} podem ser entendidos com auxílio da tradução literal, já que suas denominações explicitam muito sobre a técnica. 
+
+O método \emph{bottom-up}, "de baixo para cima", é uma abordagem que considera as previsões dos níveis mais desagregados da hierarquia de dados para que, posteriormente, a previsão do nível mais consolidado seja feita.
+
+Por outro lado, em ideia oposta, está o método \emph{top-down}, "de cima para baixo", que considera as previsão dos dados consolidados, série com nível zero de desagregação, para posterior quebra dos dados em sub-séries, conforme sejam os níveis de desagregação dos dados.
+
+\citeonline{richard-morris1988} estão dentre os diversos estudiosos do tema e apresentaram a ideia de contraposição da seguinte forma:
+
+\begin{citacao}
+\emph{Some controversy exists about the advocacy of top-down versus bottom-up forecasting strategies. Top-down forecasting refers to the process of forecasting the demand for the aggregate of items in a class and then inferring individual demands according to a percentage of the total; bottom-up refers to separately forecasting the requirements for each individual item.}
+ \end{citacao}
+
+A título ilustrativo, apresento também a exposição de \citeonline{dangerfield-morris1992} sobre a visão de oposição entre as duas abordagens:
+
+\begin{citacao}
+\emph{One approach might be referred to as a top-down (TD) strategy since a single forecast model is developed to forecast an aggregate - or family -  total which is then distributed to the individual items in the family based upon their historical proportion of the family total. The other approach might be labelled a bottom-up (BU) strategy since multiple forecast models based upon the individual item series are used to develop item forecasts.}
+\end{citacao}
+
+Em suma, pode-se dizer que diversos trabalhos foram realizados no sentido de comparar os métodos \emph{bottom-up} e \emph{top-down} e identificar as vantagens e desvantagens de cada método. 
+
+A síntese de muitos destes trabalhos foi feita por \citeonline{hyndman2009}, que conseguiram abstrair as especificidades de cada estudo de caso e, de forma holística e panorâmica, apontar vantagens e desvantagens de ambos os métodos. 
+
+Dentre as vantagens do método \emph{bottom-up} está a pouca perda de informação que ocorre quando os dados são trabalhados em níveis desagregados. Por outro lado, dados desagregados possuem muito ruídos e podem ser mais difíceis de serem modelados.
+Já para o método \emph{top-down}, são considerados como pontos positivos a simplicidade do método e a geração de previsões confiáveis no nível de agregação máximo dos dados, porém a perda de informação quando da desagregação dos dados é um problema que muitos autores relataram.
+
+\begin{citacao}
+\emph{The greatest advantage of this approach (bottom-up) is that no information is lost due to aggregation. On the other hand, bottom level data can be quite noisy and more challenging to model and forecast.
+(...)
+When bottom-level series are noisy, the forecast top-down approach can be more accurate.}\cite{hyndman2009}
+\end{citacao}
+
+Ainda sobre o método \emph{top-down}, é importante mencionar duas variações do modelo que receberam destaque na literatura. Estas variações ocorrem em função da técnica utilizada para realizar a desagragação dos dados. São elas: a) método \emph{top-down} utilizando-se a média histórica das proporções para a desagregação, e b) método \emph{top-down} utilizando-se a proporção média histórica para a desagregação. Não obstante, os conceitos dessas técnicas  digam um pouco do que se trata, cabe esclarecer um pouco mais. 
+
+Na técnica "a", \emph{top-down} com desagregação pela média histórica das proporções (ou \emph{average historical proportions}), são considerados os valores das séries inferiores à séries agregada, a partir dos quais são extraídas as proporções. Para cada observação existe uma proporção, que é a relação daquela série com a série agregada. O que é feito então é o cálculo das médias que os valores das proporções de cada série desagregada assumem com relação ao nível superior de agregação. Isso pode ser expresso por:
+
+\begin{equation}
+p_j = \frac{\sum_{t=1}^{n} \frac{Y_{t,j}}{Y_t}} {n}
+\end{equation}
+
+Nesta equação, $p_j$ é, portanto, a proporção de cada série imediatamente inferior à serie desagregada que é extraída para a desagregação da previsão, $j$ denota as séries dentro da hierarquia, $n$ o número de observações da série.
+
+Na técnica "b", \emph{top-down} com desagregação pela média global das proporções (ou \emph{proportions of the historical averages}), são considerados os valores das séries inferiores à série agregada, a partir dos quais são extraídas as proporções. Porém, ao contrário da técnica "a", calcula-se a proporção por meio da relação da soma dos valores assumidos pela série inferior com relação à soma de valores assumidos pela série agregada. Isso pode ser expresso por:
+
+\begin{equation}
+p_j = \sum_{t=1}^{n} \frac{Y_{t,j}}{n} / \sum_{t=1}^{n} \frac{Y_{t}}{n}
+\end{equation}
+
+Os elementos desta equação são interpretados da mesma forma da equação \cite{2.5}
+
+Uma variação do método\emph{top-down} foi apresentada por \citeonline{hyndman2009} utilizando-se a proporção das previsões como elemento chave para a desagregação da previsão do nível $k=0$. Este método consiste na desagregação dos níveis inferiores da hierarquia com base na proporção das previsões do nível imediatamente inferior. Ou seja, é um processo iterativo no qual são feitas as previsões de $h$ passos à frente do nível imediatamente inferior ao que se deseja prever. Destas previsões $h$ passos à frente, são extraídas as proporções que serão utilizadas para desagregar a previsão do nível superior. 
+
+\section{Abordagem combinação ótima}
+
+A última abordagem apresentada é a combinação ótima, que combina as previsões dos níveis mais desagregados para a geração da previsão dos níveis mais agregados, porém com a propriedade de que os níveis agregados sejam equivalentes à soma dos níveis desagregados.
+
+Segundo Hyndman et al (2007), criadores deste método, esta abordagem detém a capacidade de melhor aproveitar as informações da hierarquia dos dados - se comparada às demais abordagens, além de outras carcaterísticas como: contabilização de ajustes \emph{ad hoc}, produção de previsões não-viesadas (desde que as amostras sejam não-viesadas) e geração de níveis de incerteza consistentes através dos níveis hierárquicos. 
+
+
+% Terceiro Capítulo
+\chapter{Metodologia}
+\label{chap:metodologia}
+% ---
+
+Neste capítulo são apresentados o roteiro do estudo, a base de dados, o software e algumas premissas a serem adotadas no trabalho.
+
+\section{Escopo do estudo}
+
+Pretende-se a comparação dos cinco métodos de previsão apresentados:  1) \emph{bottom-up}, 2) \emph{top-down/average historical proportions (GSA)}, 3)\emph{top-down/proportions of historical averages (GSF)}, 4)\emph{top-down/forecast proportions}, e 5)combinação ótima, tendo como objetivo a melhor acurácia possível para toda a hierarquia para uma previsão de 6 (seis) passos à frente.
+
+A escolha de previsões de 6 (seis) passos à frente está embasada relacionada ao caso concreto. Acredita-se que um intervalo temporal de 6 (seis) meses é um período adequado ao planejamento de intervenções na rodovia - percepção da necessidade de intervenção, contratação e elaboração de projetos, contratação de intervenção etc.
+
+\section{Base de dados}
+
+Os dados utilizados neste estudo são provenientes da PPP MG-050 e foram obtidos junto à Secretaria de Estado de Transportes e Obras Públicas de Minas Gerais.
+O período observado vai de julho de 2008 à dezembro de 2014, tendo o mês como intervalo temporal adotado para cada observação. Assim, considerar-se-á uma conjunto de 78 observações, sendo $t_1$ = julho/2008, $t_2$ = agosto/2008 e $t_{78}$ = dezembro/2014.
+
+Como apresentado anteriormente, faz-se relevante a análise dos dados a partir de diferentes classificações, tais como: tipo de veículo, sentido de tráfego (leste-oeste ou oeste-leste) e local por onde o veículo trafegou - para esta informação será utilizado o registro da praça de pedágio. Portanto os dados serão hierarquizados conforme apresenta a Tabela \ref{tab:hierarquiaMG050}.
+
+\begin{table}[h]
+\ABNTEXfontereduzida\caption{Categorias hierarquizadas - Dados de tráfego da PPP MG-050}
+\label{tab:hierarquiaMG050}
+\centering
+\begin{tabular}{l c c c}
+
+\toprule
+
+Nível & Número de séries & Total de séries por nível \\
+\midrule
+Tráfego MG-050 & 1 & 1\\
+Praças de Pedágio & 6 & 6\\
+Sentido & 2 & 12\\
+Tipo de Veículo & 09 & 108\\
+
+\bottomrule
+\end{tabular}
+\legend{Fonte: Elaboração própria.}
+\end{table}
+
+No Apêndice \ref{chap:apendice-categorias} são apresentadas as categorias de todos os níveis hierárquicos de forma detalhada.
+
+\section{Modelo de previsão}
+
+%Uma importante lição sobre modelos de previsão é apresentada por Priestley apud Moretti e Toloi (2006, pag 6):
+
+%\begin{citacao}
+%Não há algo chamado "método de previsão"ou algo chamado "método" de previsão ARMA. Há algo chamado método de previsão de "mínimos quadrados", e este, de fato, fornece a base para virtualmente todos os estudos teóricos.
+%(...) "todos os métodos" de previsão são simplesmente diferentes procedimentos computacionais para calcular a mesma quantidade, a saber, a previsão de mínimos quadrados de um valor futuro.
+
+%Um modelo que descreve uma série não conduz, necessariamente, a um procedimento (ou fórmula) de previsão. Será necessário especificar uma função-perda,  além do modelo, para se chegar ao procedimento. Uma função perda que é utilizada frequentemente é o erro quadrático médio, embora, em algumas ocasiões, outros critérios ou funções-perda sejam mais apropriados. 
+%\end{citacao}
+
+%Não obstante as lições de Priestley, que esclarecem sobre verdadeira natureza das previsões, o termo método não será totalmente abandonado, sendo utilizado como sinônimo para procedimento e modelo, para que seja mantida alguma conexão com os termos adotados por Hyndman et al. em seus diversos estudos, que consistem na principal referência deste trabalho.
+
+Neste trabalho, o modelo de suavização exponencial será utilizado para a previsão de todas as séries da hierarquia. Este tipo de técnica considera que valores extremos são os componentes aleatórios dos dados, e assim, por meio da suavização destes extremos, realizada por meio da determinação de diferentes pesos para as observações, é possível identificar o padrão básico (Moretti e Toloi, 2006). 
+
+A escolha deste método advém de suas vantagens salientadas por diversos autores e aqui resumidas nas palavras de Moretti e Toloi (2006):(???Incluir referência do livro análise de séries temporais)
+
+\begin{citacao}
+(...) a grande popularidade atribuída aos métodos de suavização exponencial é devida à sua simplicidade, à eficiência computacional e à sua razoável precisão.
+\end{citacao}
+
+Os elementos destacados pelos autores acima são fundamentais para realização deste trabalho haja vista a grande quantidade de séries temporais a serem trabalhadas, além do grande número de previsões que serão demandadas em função da iteratividade intrínseca dos métodos de previsão hierárquica.
+
+Especialmente no que tange à eficiência computacional, este tema foi destacado por Hyndman e Khandakar (2008) (citar automatic time series forecasting: the forecast package for R):
+
+\begin{citacao}
+\emph{Automatic forecast of large number of univariate time series are often needed in business. (...) In these circumstances, an automatic forecasting algorithm must determine an appropriate time series model, estimate the parameters and compute forecast.}
+\end{citacao}
+
+Hyndman e Khandakar (2008), face a este problema, desenvolveram uma ferramenta para automatização de métodos comuns de previsão de series temporais, dentre eles, o método de suavização exponencial. 
+
+O pacote estatístico \emph{"forecast"}, desenvolvido por Hyndman e Khadankar para o software R, criou um algorítimo que executa as seguintes etapas:
+
+\begin{enumerate}
+\item Para cada série são aplicados todos os modelos (de suavização exponencial), otimizando os parâmetros para cada caso;
+\item O melhor modelo é selecionado de acordo com o AIC - critério de informação de Akaike. %(que é uma medida de quanta informação é perdida, quanto menor melhor).
+\item São produzidas as previsões para quantos passos forem solicitados.
+\item São gerados intervalos de predição para o modelo selecionado. % falar que isso só é possível graças à metodologia espaço de estados? No modelo tradicional de holt-winters uma das desvantagens apresentadas era a de 
+\end{enumerate}
+
+Este pacote será utilizado na geração de previsões neste estudo.
+
+\section{Medidas de acurácia}
+
+•	Discussão dos métodos de acurácia a serem adotados.
+
+Conversar com a Ela.
+
+\section{Software}
+Para elaboração deste trabalho foi utilizado o software R, versão 3.1.2 (2014-10-31), e os pacotes "forecast" e "hts''.
+
+% Quarto Capítulo
+\chapter{Resultados}
+
+\section{Análise Exploratória}
+
+A Figura \ref{fig:plot-total} apresenta o volume total de tráfego nas rodovias que compõe a PPP da MG-050 no período compreendido entre julho de 2008 à dezembro de 2014, totalizando 78 (setenta e oito) observações mensais. Os dados apresentados constituem o nível de maior agregação da série hierárquica deste estudo.
+A partir da representação gráfica percebe-se uma tendência de crescimento, e pela natureza dos dados, é possível supor a existência de sazonalidade.
+
+\begin{figure}[h]
+\caption{\label{fig:plot-total} Tráfego total PPP MG-050 - observações mensais.}
+\centering
+\includegraphics[scale=1]{plot-total}
+\legend{Fonte: Elaboração própria}
+\end{figure}
+
+Utilizando uma função de decomposição\footnote{ Utilizada a função \emph{decompose} do R. \emph{"Decompose a time series into seasonal, trend and irregular components using moving averages. Deals with additive or multiplicative seasonal component"}.Help R} é possível comprovar os indícios visuais. Na Figura \ref{fig:decompose-total}  são apresentados 4 gráficos: no primeiro gráfico são mostrados os dados observados, no segundo é mostrada a componente de tendência extraída dos dados, no terceiro é mostrada a compenente sazonal, extraída dos dados de forma análoga à componente de tendência, e por fim, no último gráfico é mostrada a componente aleatória.
+
+\begin{figure}[h]
+\caption{\label{fig:decompose-total} Decomposição da série "Tráfego total PPP MG-050 - observações mensais".}
+\centering
+\includegraphics[scale=1]{decompose-total}
+\legend{Fonte: Elaboração própria}
+\end{figure}
+
+Ainda no propósito de apresentação dos dados, são apresentadas informações de posição e de distribuição de frequências, respectivamente na Tabela \ref{tab:summary} e Figura \ref{fig:hist-total}.
+
+\begin{table}[h]
+\ABNTEXfontereduzida\caption{Informações Sumarizadas - Tráfego MG-050}
+\label{tab:summary}
+\centering
+\begin{tabular}{l c c c c c}
+
+\toprule
+
+Min & 1º Quartil & Mediana & Média & 3º Quartil & Máx \\
+\midrule
+$831,095$ & $936,610$ & $995,488$ & $991,762$ & $1,046,590$ & $1,137,713$\\
+
+\bottomrule
+\end{tabular}
+\legend{Fonte: Elaboração própria.}
+\end{table}
+
+\begin{figure}[h]
+\caption{\label{fig:hist-total} Histograma do tráfego total PPP MG-050 - observações mensais.}
+\centering
+\includegraphics[scale=1]{hist-total}
+\legend{Fonte: Elaboração própria}
+\end{figure}
+
+No Apêndice \ref{chap:apendice-decomposicao} são apresentados as séries para $k = 1$, ou seja, P1 - Itaúna, P2 - São Sebastião do Oeste, P3 - Córrego Fundo, P4 - Piumhi, P5 - Passos e P6 - Pratápolis.
+%Ademais, pelo fato de as séries agregadas possuírem estruturas semelhantes, a título ilustrativo foram inseridas as séries desgregadas de todos os níveis hierárquicos subordinados ao nó P1 - Itaúna/Leste.
+
+
+\section{Ajuste dos Modelos e geração de previsões}
+
+Como apresentado no capítulo \ref{chap:metodologia}, os modelos utilizados para a realização das previsões de todas as séries temporais dentro da hierarquia de dados foram calculados por meio da função "\emph{forecast}"  do pacote "\emph{forecast}" do R. 
+
+Para a definição do modelo foram utilizados os dados de julho de 2008 à junho de 2014, totalizando 72 observações. Os dados de julho de 2014 à dezembro de 2014 (6 observações) foram utilizados para avaliação dos erros produzidos pelas previsões.
+
+As previsões foram geradas para todas as níveis hierárquicos e sob a abordagem dos cinco métodos apresentados neste trabalho, quais sejam: 1) \emph{bottom-up}, 2) \emph{top-down/average historical proportions}, 3)\emph{top-down/proportions of historical averages}, 4)\emph{top-down/forecast proportions}, e 5)combinação ótima, sendo gerados 6 observações futuras (\emph{point forecast}).
+
+Os modelos ajustados para as séries temporais são apresentados no Apêndice \ref{chap:apendice-modelos}. %tem jeito?
+
+
+%Qual o nivel de confianca default da funcao forecast?
+
+\section{Comparação dos Métodos}
+
+A partir das previsões geradas, propôs-se a comparação dos métodos sob a ótica dos erros RMSE e MAPE, conforme já apresentado. A Tabela \ref{tab:erros} apresenta os resultados.
+
+Foram calculadas as médias dos erros gerados pelas previsões seis passos a frente. Para uma análise gradativa, considerou-se também a média dos erros por nível, ou seja, a média de erros das séries do nível 1 (A, B, C, D, E, F), a média de erros das séries do nível 2 (AA, AB, BA, ..., FB) e a média dos erros das séries do nível 3.
+Os erros das séries do nível 3 foram suprimidos por trazerem pouca informação.
+
+Face ao objetivo de se concluir pelo "melhor" método, aqui tendo por "melhor" o método que produziu, globalmente, previsões mais acuradas - ou seja, menor erro total, foram calculadas as médias totais de erros produzidos em cada método, sintetizada na última linha da Tabela \ref{tab:erros}.
+
+Observou-se que, globalmente, o método que apresentou maior acurácia nas previsões foi o \emph{bottom-up}, que apresentou média de erro de 8,16\%, seguido dos métodos \emph{top-dow/forecast proportions} e combinação ótima, que tiveram erros próximos aos do método \emph{bottom-up} , 8,62\% e 8,91\%, respectivamente.
+
+Os métodos tradicionais \emph{top-down} (\emph{top-down/average historical proportions (GSA)} e \emph{top-down/proportions of historical averages (GSF)}) tiveram desempenho muito piores, com erros de 20.98\% e 20.45\%, respectivamente.
+
+Ultrapassando a análise panorâmica dos resultados produzidos pelos diferentes métodos, faz-se conveniente analisar o desempenho nível a nível de cada uma das 5 abordagens. Considerando-se a média dos erros das previsões das séries por nível, observa-se que o método bottom-up também teve melhor desempenho.
+
+Uma forma interessante de analisar os dados é partindo da interpretação de como os métodos funcionam.No método \emph{bottom up}, que agrega os dados de baixo para cima, à medida em que os dados foram sendo agregados, os erros foram reduzidos. Por outro lado, nos métodos tradicionais \emph{top-down}, nos quais ocorrem desagregações a partir da previsão global, à medida que as informações são desgaregadas os erros aumentaram.
+
+Os método de combinação ótima e \emph{top-down/forecats proportions}, alternaram como segundo melhor método, possuindo, inclusive, erros mais próximos aos do método \emph{bottom-up} do que dos tradicionais métodos \emph{top-down}.
+
+\begin{figure}[h]
+\caption{\label{fig:comp-erros} Comparação dos MAPEs (Total e média dos Níveis Hierárquicos}
+\centering
+\includegraphics[scale=1]{comp-erros}
+\legend{Fonte: Elaboração própria}
+\end{figure}
+
+
+\definecolor{Gray}{gray}{0.85}
+\begin{landscape}
+% Table created by stargazer v.5.1 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
+% Date and time: Sun, Feb 22, 2015 - 17:12:49
+\begin{table}[!htbp] \centering 
+  \caption{} 
+  \label{tab:erros} 
+\begin{tabular}{@{\extracolsep{5pt}} ccccccccccc} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex]
+ & \multicolumn{2}{c}{Bottom-Up} &\multicolumn{2}{c}{Top-Down GSA} & \multicolumn{2}{c}{Top-Down GSF} & \multicolumn{2}{c}{Top-Down FP} & \multicolumn{2}{c}{Comb} \\ 
+ & RMSE & MAPE & RMSE & MAPE & RMSE & MAPE & RMSE & MAPE & RMSE & MAPE \\ 
+\hline \\[-1.8ex] 
+
+Total & $\textbf{28,413.21}$ & $\textbf{2.09}$ & $34,827.68$ & $2.35$ & $34,827.68$ & $2.35$ & $34,827.68$ & $2.35$ & $30,636.23$ & $2.13$ \\ 
+
+
+\midrule
+\rowcolor{Gray}
+Nível 1 & $\textbf{5,964.71}$ & $\textbf{2.87}$ & $7,205.46$ & $3.78$ & $7,189.06$ & $3.75$ & $7,602.92$ & $3.70$ & $6,922.81$ & $3.30$ \\
+\midrule
+
+A & $9,021.58$ & $2.49$ & $9,451.79$ & $2.01$ & $\textbf{9,484.01}$ & $\textbf{1.99}$ & $11,130.88$ & $3.23$ & $12,290.27$ & $3.63$ \\ 
+B & $5,753.55$ & $2.41$ & $5,261.62$ & $2.27$ & $5,299.83$ & $2.29$ & $\textbf{5,509.86}$ & $\textbf{1.83}$ & $4,981.68$ & $2.08$ \\ 
+C & $3,192.96$ & $3.18$ & $5,095.67$ & $5.09$ & $5,079.32$ & $5.07$ & $3,682.23$ & $3.61$ & $\textbf{3,521.26}$ & $\textbf{3.46}$ \\ 
+D & $\textbf{4,126.07}$ & $\textbf{2.52}$ & $4,887.01$ & $2.62$ & $4,924.48$ & $2.62$ & $5,895.91$ & $3.33$ & $5,243.01$ & $3.03$ \\ 
+E & $7,713.00$ & $3.18$ & $\textbf{6,095.87}$ & $\textbf{2.47}$ & $6,122.12$ & $2.48$ & $10,897.82$ & $4.77$ & $8,871.52$ & $3.66$ \\ 
+F & $\textbf{5,981.10}$ & $\textbf{3.43}$ & $12,440.77$ & $8.23$ & $12,224.59$ & $8.08$ & $8,500.82$ & $5.42$ & $6,629.13$ & $3.96$ \\ 
+
+\midrule
+\rowcolor{Gray}
+Nível 2 & $\textbf{3,005.90}$ & $\textbf{2.88}$ & $3,739.74$ & $3.91$ & $3,730.18$ & $3.89$ & $3,848.80$ & $3.75$ & $3,491.15$ & $3.32$ \\ 
+\midrule
+
+AA & $4,677.94$ & $2.63$ & $4,655.18$ & $1.80$ & $\textbf{4,674.24}$ & $\textbf{1.78}$ & $5,523.81$ & $3.25$ & $6,221.15$ & $3.72$ \\ 
+AB & $4,505.56$ & $2.35$ & $5,112.33$ & $2.22$ & $\textbf{5,121.45}$ & $\textbf{2.19}$ & $5,673.24$ & $3.20$ & $6,149.31$ & $3.54$ \\ 
+BA & $2,608.59$ & $2.22$ & $\textbf{1,986.62}$ & $\textbf{1.64}$ & $2,003.92$ & $1.65$ & $2,748.86$ & $1.77$ & $2,222.54$ & $1.85$ \\ 
+BB & $3,163.05$ & $2.60$ & $3,571.19$ & $2.88$ & $3,588.17$ & $2.89$ & $\textbf{2,835.37}$ & $\textbf{1.94}$ & $2,785.98$ & $2.30$ \\ 
+CA & $\textbf{1,391.89}$ & $\textbf{2.64}$ & $3,004.13$ & $6.64$ & $2,970.07$ & $6.56$ & $1,575.71$ & $2.91$ & $1,528.26$ & $2.82$ \\ 
+CB & $\textbf{1,836.41}$ & $\textbf{3.73}$ & $2,342.27$ & $4.64$ & $2,352.53$ & $4.66$ & $2,210.66$ & $4.32$ & $2,063.08$ & $4.11$ \\ 
+DA & $\textbf{1,865.66}$ & $\textbf{2.28}$ & $2,433.81$ & $2.40$ & $2,449.69$ & $2.42$ & $2,508.67$ & $2.72$ & $2,286.85$ & $2.57$ \\ 
+DB & $\textbf{2,274.14}$ & $\textbf{2.76}$ & $2,499.35$ & $2.88$ & $2,517.66$ & $2.88$ & $3,682.12$ & $4.45$ & $3,090.99$ & $3.65$ \\ 
+EA & $3,550.48$ & $2.97$ & $\textbf{3,531.58}$ & $\textbf{2.89}$ & $3,541.74$ & $2.90$ & $5,269.69$ & $4.60$ & $4,210.98$ & $3.42$ \\ 
+EB & $4,198.81$ & $3.52$ & $\textbf{2,967.12}$ & $\textbf{2.45}$ & $2,979.95$ & $2.46$ & $5,641.71$ & $4.94$ & $4,682.27$ & $3.91$ \\ 
+FA & $\textbf{2,884.93}$ & $\textbf{3.33}$ & $6,133.96$ & $7.70$ & $6,037.62$ & $7.56$ & $3,727.12$ & $4.71$ & $2,982.07$ & $3.49$ \\ 
+FB & $\textbf{3,113.38}$ & $\textbf{3.54}$ & $6,639.29$ & $8.84$ & $6,525.12$ & $8.68$ & $4,788.60$ & $6.15$ & $3,670.35$ & $4.44$ \\ 
+
+\midrule
+\rowcolor{Gray}
+Nível 3 & $\textbf{512.03}$ & $\textbf{9.10}$ & $1,054.77$ & $24.01$ & $1,034.26$ & $23.39$ & $583.83$ & $9.50$ & $550.64$ & $9.91$ \\ 
+\midrule
+
+Média Total & $ - $ & $8.16$ & $ - $ & $20.98$ & $ - $ & $20.45$ & $ - $ & $8.62$ & $ - $ & $8.91$ \\ 
+
+\hline \\[-1.8ex] 
+\end{tabular} 
+\end{table} 
+
+
+\end{landscape}
+
+% ----------------------------------------------------------
+% Finaliza a parte no bookmark do PDF
+% para que se inicie o bookmark na raiz
+% e adiciona espaço de parte no Sumário
+% ----------------------------------------------------------
+
+% ---
+% Conclusão (outro exemplo de capítulo sem numeração e presente no sumário)
+% ---
+\chapter*[Conclusão]{Conclusão}
+\addcontentsline{toc}{chapter}{Conclusão}
+% ---
+
+Não obstante dicotomia clássica apresentada pela literatura entre \emph{bottom-up} e\emph{ top-down} podemos defender que, neste caso prático, a comparação dos métodos demonstrou que o método \emph{bottom-up} apresentou os melhores resultados.
+
+Pode-se observar claramente que os maiores erros de previsão estavam nos níveis mais desagregados, como era de se esperar, sendo para estes, portanto, mais difícil de se estabelecer um modelo para previsão. Por trabalhar em primeiro lugar as séries mais desagregadas, o método \emph{bottom-up} respondeu satisfatoriamente no processo de agregação, valendo-se das informações das séries desagregadas e mantendo a coerência da hierarquia.
+
+Outro ponto que merece destaque foi o desempenho dos métodos apresentados por Hyndman et al. em seus trabalhos dos últimos 10 anos. Os métodos \emph{top-down/forecast proportions} e o método combinação ótima, apresentaram, predominantemente, resultados próximos aos do método bottom-up.
+
+Próximos estudos poderão confirmar a suposição de que estes métodos possam figurar como um meio termo entre o antagonismo clássico entre \emph{top-down} e \emph{bottom-up}, apresentando-se como uma alternativa sub-ótima.
+
+Reconhecendo as limitações de um trabalho de conclusão de curso, creio que algumas melhorias podem ser feitas futuramente para aprimoramento do trabalho.
+
+O refinamento dos modelos de previsão por meio de validação cruzada com múltiplas rodadas é dos pontos de melhoria já que o principal foco está na acurácia das previsões geradas. Neste estudo foi realizada apenas uma partição dos dados , sendo o \emph{training set} definido com 72 observações  e o \emph{validation set} com as 6 últimas observações.
+
+Outro ponto de melhoria é a comparação com um sexto método - \emph{middle out}, também proposto por Hyndam et al. Neste método são combinados os métodos \emph{bottom-up} e \emph{top-down}, as séries do meio da hierarquia são tomadas como base para as previsões. Para as séries superiores aplica-se o método \emph{bottom-up} e para as séries abaixo aplica-se o método \emph{top-down}.
+
+Por fim, creio que outro refinamento, este de ordem prática, trata de aferir se as previsões geradas pelo método de previsão hierárquica trazem ganhos com relação ao método atualmente utilizado. 
+
+
+
+% ----------------------------------------------------------
+% ELEMENTOS PÓS-TEXTUAIS
+% ----------------------------------------------------------
+\postextual
+% ----------------------------------------------------------
+
+% ----------------------------------------------------------
+% Referências bibliográficas
+% ----------------------------------------------------------
+\bibliography{./Bibliografia.bib}
+
+% ----------------------------------------------------------
+% Glossário
+% ----------------------------------------------------------
+%
+% Consulte o manual da classe abntex2 para orientações sobre o glossário.
+%
+%\glossary
+
+% ----------------------------------------------------------
+% Apêndices
+% ----------------------------------------------------------
+
+% ---
+% Inicia os apêndices
+% ---
+\begin{apendicesenv}
+
+% Imprime uma página indicando o início dos apêndices
+\partapendices
+
+% ----------------------------------------------------------
+\chapter{Segmentos homogêneos MG-050}
+\label{chap:segmentos-homogeneos-mg050}
+% ----------------------------------------------------------
+
+
+\begin{table}[h]
+\ABNTEXfontereduzida\caption{Segmentos homogêneos MG-050}
+\label{tab:segmentos-homogeneos-mg050}
+\begin{tabular}{c c c c c}
+
+\toprule
+
+Segmentos homogêneos &  Rodovia & Localização & Extensão (km) & Peso \\
+\midrule
+Segmento 1 & MG-050 & 57,6 - 69,4 & 11,8 & 3,18\% \\
+Segmento 2 & MG-050 & 69,4 - 80,0 & 10,6 & 2,85\% \\
+Segmento 3 & MG-050 & 80,0 - 86,5 & 6,5 & 1,75\% \\
+Segmento 4 & MG-050 & 86,5 - 92,2 & 5,7 & 1,53\% \\
+Segmento 5 & MG-050 & 92,2 - 126,0 & 33,8 & 9,10\% \\
+Segmento 6 & MG-050 & 126,0 - 132,0 & 6,0 & 1,62\% \\
+Segmento 7 & MG-050 & 132,0 - 143,7 & 11,7 & 3,15\% \\
+Segmento 8 & MG-050 & 143,7 - 164,8 & 21,1 & 5,68\% \\
+Segmento 9 & MG-050 & 164,8 - 212,8 & 48 & 12,47\% \\
+Segmento 10 & MG-050 & 212,8 - 261,6 & 48,8 & 13,14\% \\
+Segmento 11 & MG-050 & 261,6 - 284,7 & 23,1 & 6,22\% \\
+Segmento 12 & MG-050 & 284,7 - 331,0 & 46,3 & 12,47\% \\
+Segmento 13 & MG-050 & 331,0 - 354,6 & 23,6 & 6,36\% \\
+Segmento 14 & MG-050 & 354,6 - 359,3 & 4,7 & 1,27\% \\
+Segmento 15 & MG-050 & 359,3 - 369,1 & 9,8 & 2,64\% \\
+Segmento 16 & MG-050 & 369,1 - 372,1 & 3,0 & 0,81\% \\
+Segmento 17 & MG-050 & 372,1 - 387,7  & 15,6 & 4,20\% \\
+Segmento 18 & MG-050 & 387,7 - 402,0 & 14,3 & 3,85\% \\
+Segmento 19 & BR-491 & 0,0 - 4,7 & 4,65 & 1,25\% \\
+Segmento 20 & BR-265 & 637,2 - 659,5 & 22,3 & 6,01\% \\
+
+\bottomrule
+\end{tabular}
+\legend{Fonte: Contrato SETOP 007/2007, Anexo V (adaptado).}
+\end{table}
+
+
+
+
+% ----------------------------------------------------------
+\chapter{Categorias dos Níveis Hierárquicos}
+\label{chap:apendice-categorias}
+% ----------------------------------------------------------
+
+Abaixo, a Tabela \ref{tab:desc_hierarquiaMG050} apresenta as categorias de cada nível hierárquico dos dados adotados neste trabalho.  
+
+\begin{table}[h]
+\ABNTEXfontereduzida\caption{Categorias dos Níveis Hierárquicos}
+\label{tab:desc_hierarquiaMG050}
+\begin{tabular}{c l c c}
+
+\toprule
+
+k &  Categorias & Número de séries & Total de séries por nível \\
+\midrule
+0 & \emph{Tráfego MG-050} & 1 & 1 \\
+1 & \emph{Praças de Pedágio} & 6 & 6 \\
+  & P1 - Itaúna\\
+  & P2 - São Sebastião do Oeste\\
+  & P3 - Córrego Fundo\\
+  & P4 - Piumhi\\
+  & P5 - Passos\\
+  & P6 - Pratápolis\\
+2 & \emph{Sentido} & 2 & 12 \\
+ & Leste\\
+ & Oeste\\
+3 & \emph{Tipo de Veículo} & 9 & 108\\
+ & 1 - Veículos de dois exios com rodagem simples\\
+ & 2 - Veículos de dois eixos com rodagem dupla\\
+ & 3 - Veículos de três eixos com rodagem simples\\
+ & 4 - Veículos de três eixos com rodagem dupla\\
+ & 5 - Veículos de quatro eixos com rodagem simples\\
+ & 6 - Veículos de quatro eixos com rodagem dupla\\
+ & 7 - Véiculos de cinco eixos\\
+ & 8 - Veículos de seis eixos\\
+ & 9 - Motocicletas, motoneta e bicicleta a motor\\
+\bottomrule
+\end{tabular}
+\legend{Fonte: Elaboração própria.}
+\end{table}
+
+% ----------------------------------------------------------
+\chapter{Séries temporais desagregadas}
+\label{chap:apendice-decomposicao}
+% ----------------------------------------------------------
+
+A título ilustrativo são apresentadas na Figura \ref{fig:nivel1} as séries temporais do primeiro nível de desagregação, $k=1$.
+
+\begin{figure}[h]
+\caption{\label{fig:nivel1} Séries temporais nível 1 ($k=1$)}
+\centering
+\includegraphics[scale=1]{nivel1}
+\legend{Fonte: Elaboração própria}
+\end{figure}
+
+
+%inserir decomposição da série nivel1_A, AA, e os noves graficos por tipo de veículo). (11 GRAFICOS AO TODO)
+
+% ----------------------------------------------------------
+\chapter{Modelos de alisamento exponencial utilizados}
+\label{chap:apendice-modelos}
+% ----------------------------------------------------------
+
+\begin{longtable} {| c c l c |}
+\label{tab:modelos-ets}
+
+X & X & X & X \\
+\hline
+\endfirsthead
+
+1 & Total & \emph{Tráfego MG-050} & (M,A,A) \\
+
+ & \emph{Nível 1} & \emph{Praças de Pedágio} &  \\ 
+
+2 & A & P1 - Itaúna & (M,N,M) \\ 
+3 & B & P2 - S. S. do Oeste & A,A,A\\ 
+4 & C & P3 - Córrego Fundo & M,N,A\\ 
+5 & D & P4 - Piumhi & M,N,M\\ 
+6 & E & P5 - Passos & M,A,A\\ 
+7 & F & P6 - Pratápolis & A,A,A\\ 
+
+ & \emph{Nível 2} & \emph{Sentido} &  \\ 
+
+8 & AA & P1-Leste & M,N,M\\
+9 & AB & P1-Oeste & M,N,M\\
+10 & BA & P2-Leste & A,A,A\\
+11 & BB & P2-Oeste & M,A,A\\
+12 & CA & P3-Leste & M,N,M\\
+13 & CB & P3-Oeste & A,A,A\\
+14 & DA & P4-Leste & M,N,M\\
+15 & DB & P4-Oeste & M,A,A\\
+16 & EA & P5-Leste & M,A,A\\
+17 & EB & P5-Oeste & M,A,A\\
+18 & FA & P6-Leste & A,Ad,A\\
+19 & FB & P6-Oeste & M,A,A\\
+
+
+ & \emph{Nível 3} & \emph{Tipo de Veículo} &  \\
+
+
+20 & AAA & P1-Leste-1 & M,A,A\\
+21 & AAB & P1-Leste-2 & M,N,A\\
+22 & AAC & P1-Leste-3 & M,Md,N\\
+23 & AAD & P1-Leste-4 & M,N,A\\
+24 & AAE & P1-Leste-5 & A,N,N\\
+25 & AAF & P1-Leste-6 & A,N,N\\
+26 & AAG & P1-Leste-7 & M,N,N\\
+27 & AAH & P1-Leste-8 & M,A,N\\
+28 & AAI & P1-Leste-9 & A,Ad,A\\
+
+
+29 & ABA & P1-Oeste-1 & M,A,A\\
+30 & ABB & P1-Oeste2 & A,N,A\\
+31 & ABC & P1-Oeste-3 & M,Md,N\\
+32 & ABD & P1-Oeste-4 & M,N,A\\
+33 & ABE & P1-Oeste-5 & M,N,A\\
+34 & ABF & P1-Oeste-6 & M,N,N\\
+35 & ABG & P1-Oeste-7 & M,N,N\\
+36 & ABH & P1-Oeste-8 & A,A,N\\
+37 & ABI & P1-Oeste-9 & M,Ad,A\\
+
+
+38 & BAA & P2-Leste-1 & M,A,A\\
+39 & BAB & P2-Leste-2 & M,N,A\\
+40 & BAC & P2-Leste-3 & M,N,A\\
+41 & BAD & P2-Leste-4 & M,N,A\\
+42 & BAE & P2-Leste-5 & M,N,M\\
+43 & BAF & P2-Leste-6 & M,N,A\\
+44 & BAG & P2-Leste-7 & M,N,M\\
+45 & BAH & P2-Leste-8 & A,N,A\\
+46 & BAI & P2-Leste-9 & M,N,A\\
+
+
+47 & BBA & P2-Oeste-1 & M,A,A)\\
+48 & BBB & P2-Oeste2 & M,N,A\\
+49 & BBC & P2-Oeste-3 & A,A,N\\
+50 & BBD & P2-Oeste-4 & M,N,M\\
+51 & BBE & P2-Oeste-5 & A,N,A\\
+52 & BBF & P2-Oeste-6 & A,Ad,N\\
+53 & BBG & P2-Oeste-7 & M,N,M\\
+54 & BBH & P2-Oeste-8 & A,N,A\\
+55 & BBI & P2-Oeste-9 & M,N,A\\
+
+
+56 & CAA & P3-Leste-1 & M,A,A\\
+57 & CAB & P3-Leste-2 & M,N,A\\
+58 & CAC & P3-Leste-3 & M,Md,N\\
+59 & CAD & P3-Leste-4 & M,N,A\\
+60 & CAE & P3-Leste-5 & M,N,M\\
+61 & CAF & P3-Leste-6 & M,N,A\\
+62 & CAG & P3-Leste-7 & M,N,M)\\
+63 & CAH & P3-Leste-8 & M,N,A\\
+64 & CAI & P3-Leste-9 & M,N,M\\
+
+
+65 & CBA & P3-Oeste-1 & M,A,A\\
+66 & CBB & P3-Oeste2 & M,N,A\\
+67 & CBC & P3-Oeste-3 & M,Md,N\\
+68 & CBD & P3-Oeste-4 & M,N,A\\
+69 & CBE & P3-Oeste-5 & M,N,A\\
+70 & CBF & P3-Oeste-6 & A,N,N\\
+71 & CBG & P3-Oeste-7 & M,N,M\\
+72 & CBH & P3-Oeste-8 & A,N,A\\
+73 & CBI & P3-Oeste-9 & M,N,M\\
+
+
+74 & DAA & P4-Leste-1 & M,A,A\\
+75 & DAB & P4-Leste-2 & A,N,A\\
+76 & DAC & P4-Leste-3 & M,A,A\\
+77 & DAD & P14-Leste-4 & M,N,A\\
+78 & DAE & P4-Leste-5 & A,A,A\\
+79 & DAF & P4-Leste-6 & M,N,A\\
+80 & DAG & P4-Leste-7 & M,N,M\\
+81 & DAH & P4-Leste-8 & M,N,M\\
+82 & DAI & P4-Leste-9 & M,N,M\\
+
+
+83 & DBA & P4-Oeste-1 & M,A,A\\
+84 & DBB & P4-Oeste2 & M,N,A\\
+85 & DBC & P4-Oeste-3 & M,A,A\\
+86 & DBD & P4-Oeste-4 & M,N,M\\
+87 & DBE & P4-Oeste-5 & A,A,A\\
+88 & DBF & P4-Oeste-6 & A,N,N\\
+89 & DBG & P4-Oeste-7 & M,N,M\\
+90 & DBH & P4-Oeste-8 & M,N,M\\
+91 & DBI & P4-Oeste-9 & M,N,M\\
+
+
+92 & EAA & P5-Leste-1 & M,A,A\\
+93 & EAB & P5-Leste-2 & M,N,A\\
+94 & EAC & P5-Leste-3 & M,A,A\\
+95 & EAD & P5-Leste-4 & M,N,A\\
+96 & EAE & P5-Leste-5 & M,N,M\\
+97 & EAF & P5-Leste-6 & A,N,N\\
+98 & EAG & P5-Leste-7 & M,N,M\\
+99 & EAH & P5-Leste-8 & M,N,M\\
+100 & EAI & P5-Leste-9 & M,N,A\\
+
+
+101 & EBA & P5-Oeste-1 & M,A,A\\
+102 & EBB & P5-Oeste2 & M,N,M\\
+103 & EBC & P5-Oeste-3 & M,A,M\\
+104 & EBD & P5-Oeste-4 & A,N,A\\
+105 & EBE & P5-Oeste-5 & M,N,N\\
+106 & EBF & P5-Oeste-6 & A,N,N\\
+107 & EBG & P5-Oeste-7 & M,N,M\\
+108 & EBH & P5-Oeste-8 & M,A,M\\
+109 & EBI & P5-Oeste-9 & M,N,A\\
+
+
+110 & FAA & P6-Leste-1 & M,A,A\\
+111 & FAB & P6-Leste-2 & M,N,A\\
+112 & FAC & P6-Leste-3 & M,A,A\\
+113 & FAD & P6-Leste-4 & M,N,M\\
+114 & FAE & P6-Leste-5 & M,N,M\\
+115 & FAF & P6-Leste-6 & M,N,N\\
+116 & FAG & P6-Leste-7 & M,N,M\\
+117 & FAH & P6-Leste-8 & A,Ad,A\\
+118 & FAI & P6-Leste-9 & M,N,A\\
+
+
+119 & FBA & P6-Oeste-1 & M,A,A\\
+120 & FBB & P6-Oeste2 & M,N,A\\
+121 & FBC & P6-Oeste-3 & M,N,M\\
+122 & FBD & P6-Oeste-4 & M,N,M\\
+123 & FBE & P6-Oeste-5 & M,N,N\\
+124 & FBF & P6-Oeste-6 & A,N,N\\
+125 & FBG & P6-Oeste-7 & M,N,M\\
+126 & FBH & P6-Oeste-8 & M,A,M\\
+127 & FBI & P6-Oeste-9 & M,N,A\\
+
+\end{longtable}
+
+
+\begin{table}[h]
+\ABNTEXfontereduzida\caption{Análise dos modelos nas séries desagregadas}
+\label{tab:modelos-bottom}
+\begin{tabular}{c l c c}
+
+\toprule
+
+Série & Modelo  \\
+\midrule
+Veículo tipo 1 & \\
+20 & AAA & P1-Leste-1 & M,A,A\\
+29 & ABA & P1-Oeste-1 & M,A,A\\
+38 & BAA & P2-Leste-1 & M,A,A\\
+47 & BBA & P2-Oeste-1 & M,A,A)\\
+56 & CAA & P3-Leste-1 & M,A,A\\
+65 & CBA & P3-Oeste-1 & M,A,A\\
+74 & DAA & P4-Leste-1 & M,A,A\\
+83 & DBA & P4-Oeste-1 & M,A,A\\
+92 & EAA & P5-Leste-1 & M,A,A\\
+101 & EBA & P5-Oeste-1 & M,A,A\\
+110 & FAA & P6-Leste-1 & M,A,A\\
+119 & FBA & P6-Oeste-1 & M,A,A\\
+
+\hline
+Veículo tipo 2 & \\
+\hline
+
+21 & AAB & P1-Leste-2 & M,N,A\\
+30 & ABB & P1-Oeste2 & A,N,A\\
+39 & BAB & P2-Leste-2 & M,N,A\\
+48 & BBB & P2-Oeste2 & M,N,A\\
+57 & CAB & P3-Leste-2 & M,N,A\\
+66 & CBB & P3-Oeste2 & M,N,A\\
+75 & DAB & P4-Leste-2 & A,N,A\\
+84 & DBB & P4-Oeste2 & M,N,A\\
+93 & EAB & P5-Leste-2 & M,N,A\\
+102 & EBB & P5-Oeste2 & M,N,M\\
+111 & FAB & P6-Leste-2 & M,N,A\\
+120 & FBB & P6-Oeste2 & M,N,A\\
+
+\hline
+Veículo tipo 3 & \\
+\hline
+
+22 & AAC & P1-Leste-3 & M,Md,N\\
+31 & ABC & P1-Oeste-3 & M,Md,N\\
+40 & BAC & P2-Leste-3 & M,N,A\\
+49 & BBC & P2-Oeste-3 & A,A,N\\
+58 & CAC & P3-Leste-3 & M,Md,N\\
+67 & CBC & P3-Oeste-3 & M,Md,N\\
+76 & DAC & P4-Leste-3 & M,A,A\\
+85 & DBC & P4-Oeste-3 & M,A,A\\
+94 & EAC & P5-Leste-3 & M,A,A\\
+103 & EBC & P5-Oeste-3 & M,A,M\\
+112 & FAC & P6-Leste-3 & M,A,A\\
+121 & FBC & P6-Oeste-3 & M,N,M\\
+
+\hline
+Veículo tipo 4 & \\
+\hline
+
+23 & AAD & P1-Leste-4 & M,N,A\\
+32 & ABD & P1-Oeste-4 & M,N,A\\
+41 & BAD & P2-Leste-4 & M,N,A\\
+50 & BBD & P2-Oeste-4 & M,N,M\\
+59 & CAD & P3-Leste-4 & M,N,A\\
+68 & CBD & P3-Oeste-4 & M,N,A\\
+77 & DAD & P14-Leste-4 & M,N,A\\
+86 & DBD & P4-Oeste-4 & M,N,M\\
+95 & EAD & P5-Leste-4 & M,N,A\\
+104 & EBD & P5-Oeste-4 & A,N,A\\
+113 & FAD & P6-Leste-4 & M,N,M\\
+122 & FBD & P6-Oeste-4 & M,N,M\\
+
+\hline
+Veículo tipo 5 & \\
+\hline
+
+24 & AAE & P1-Leste-5 & A,N,N\\
+33 & ABE & P1-Oeste-5 & M,N,A\\
+42 & BAE & P2-Leste-5 & M,N,M\\
+51 & BBE & P2-Oeste-5 & A,N,A\\
+60 & CAE & P3-Leste-5 & M,N,M\\
+69 & CBE & P3-Oeste-5 & M,N,A\\
+78 & DAE & P4-Leste-5 & A,A,A\\
+87 & DBE & P4-Oeste-5 & A,A,A\\
+96 & EAE & P5-Leste-5 & M,N,M\\
+105 & EBE & P5-Oeste-5 & M,N,N\\
+114 & FAE & P6-Leste-5 & M,N,M\\
+123 & FBE & P6-Oeste-5 & M,N,N\\
+
+\hline
+Veículo tipo 6 & \\
+\hline
+
+25 & AAF & P1-Leste-6 & A,N,N\\
+34 & ABF & P1-Oeste-6 & M,N,N\\
+43 & BAF & P2-Leste-6 & M,N,A\\
+52 & BBF & P2-Oeste-6 & A,Ad,N\\
+61 & CAF & P3-Leste-6 & M,N,A\\
+70 & CBF & P3-Oeste-6 & A,N,N\\
+79 & DAF & P4-Leste-6 & M,N,A\\
+88 & DBF & P4-Oeste-6 & A,N,N\\
+97 & EAF & P5-Leste-6 & A,N,N\\
+106 & EBF & P5-Oeste-6 & A,N,N\\
+115 & FAF & P6-Leste-6 & M,N,N\\
+124 & FBF & P6-Oeste-6 & A,N,N\\
+
+\hline
+Veículo tipo 7 & \\
+\hline
+
+26 & AAG & P1-Leste-7 & M,N,N\\
+35 & ABG & P1-Oeste-7 & M,N,N\\
+44 & BAG & P2-Leste-7 & M,N,M\\
+53 & BBG & P2-Oeste-7 & M,N,M\\
+62 & CAG & P3-Leste-7 & M,N,M)\\
+71 & CBG & P3-Oeste-7 & M,N,M\\
+80 & DAG & P4-Leste-7 & M,N,M\\
+89 & DBG & P4-Oeste-7 & M,N,M\\
+98 & EAG & P5-Leste-7 & M,N,M\\
+107 & EBG & P5-Oeste-7 & M,N,M\\
+116 & FAG & P6-Leste-7 & M,N,M\\
+125 & FBG & P6-Oeste-7 & M,N,M\\
+
+
+\hline
+Veículo tipo 8 & \\
+\hline
+27 & AAH & P1-Leste-8 & M,A,N\\
+36 & ABH & P1-Oeste-8 & A,A,N\\
+45 & BAH & P2-Leste-8 & A,N,A\\
+54 & BBH & P2-Oeste-8 & A,N,A\\
+63 & CAH & P3-Leste-8 & M,N,A\\
+72 & CBH & P3-Oeste-8 & A,N,A\\
+81 & DAH & P4-Leste-8 & M,N,M\\
+90 & DBH & P4-Oeste-8 & M,N,M\\
+99 & EAH & P5-Leste-8 & M,N,M\\
+108 & EBH & P5-Oeste-8 & M,A,M\\
+17 & FAH & P6-Leste-8 & A,Ad,A\\
+1126 & FBH & P6-Oeste-8 & M,A,M\\
+
+
+\hline
+Veículo tipo 9 & \\
+\hline
+
+28 & AAI & P1-Leste-9 & A,Ad,A\\
+37 & ABI & P1-Oeste-9 & M,Ad,A\\
+46 & BAI & P2-Leste-9 & M,N,A\\
+55 & BBI & P2-Oeste-9 & M,N,A\\
+64 & CAI & P3-Leste-9 & M,N,M\\
+73 & CBI & P3-Oeste-9 & M,N,M\\
+82 & DAI & P4-Leste-9 & M,N,M\\
+91 & DBI & P4-Oeste-9 & M,N,M\\
+100 & EAI & P5-Leste-9 & M,N,A\\
+109 & EBI & P5-Oeste-9 & M,N,A\\
+118 & FAI & P6-Leste-9 & M,N,A\\
+127 & FBI & P6-Oeste-9 & M,N,A\\
+
+\bottomrule
+\end{tabular}
+\legend{Fonte: Elaboração própria.}
+\end{table}
+
+
+\end{apendicesenv}
+% ---
+
+
+% ----------------------------------------------------------
+% Anexos
+% ----------------------------------------------------------
+
+% ---
+% Inicia os anexos
+% ---
+%\begin{anexosenv}
+
+% Imprime uma página indicando o início dos anexos
+%\partanexos
+
+% ---
+%\chapter{Morbi ultrices rutrum lorem.}
+% ---
+%\lipsum[30]
+
+% ---
+%\chapter{Cras non urna sed feugiat cum sociis natoque penatibus et magnis dis
+%parturient montes nascetur ridiculus mus}
+% ---
+
+%\lipsum[31]
+
+% ---
+%\chapter{Fusce facilisis lacinia dui}
+% ---
+
+%\lipsum[32]
+
+%\end{anexosenv}
+
+\end{document}
